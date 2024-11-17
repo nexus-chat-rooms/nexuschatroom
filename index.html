@@ -11,6 +11,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdn.scaledrone.com/scaledrone.min.js"></script>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- FontAwesome for icons -->
     <style>
         * {
             box-sizing: border-box;
@@ -293,11 +294,19 @@
             }
         }
 
-        /* New CSS for Links */
-        .link {
-            color: red;
-            text-decoration: underline; /* Keep it underlined */
-            cursor: pointer; /* Show hand cursor */
+        /* Styles for microphone button */
+        .mic-button {
+            margin-left: 10px; /* Space between the input and mic button */
+            margin-right: 10px; /* Space to the send button */
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #ffffff;
+            font-size: 24px; /* Adjust size to match your design */
+        }
+
+        .mic-button:disabled {
+            color: rgba(255, 255, 255, 0.5);
         }
     </style>
 </head>
@@ -314,7 +323,7 @@
         </div>
     </div>
 
-    <audio id="notificationSound" src="notification.mp3" preload="auto"></audio> <!-- Add sound notification -->
+    <audio id="notificationSound" src="notification.mp3" preload="auto"></audio>
 
     <div class="container" id="chatContainer" style="display: none;">
         <div class="header">
@@ -324,6 +333,9 @@
         <div class="messages" id="messages"></div>
         <form class="input-area" onsubmit="return false;">
             <input id="messageInput" placeholder="Type a message..." type="text" required aria-label="Message Input" />
+            <button class="mic-button" type="button" id="micButton" aria-label="Voice Input">
+                <i class="fas fa-microphone-slash" id="micIcon"></i>
+            </button>
             <input type="submit" value="Send" onclick="sendMessage()" aria-label="Send Message">
         </form>
         <div class="join-notification" id="joinNotification"></div>
@@ -342,19 +354,21 @@
         let userName = '';
         let roomCode = '';
         const userNames = {};
+        let isRecording = false; // Track voice recording status
+        let recognition; // Speech recognition instance
 
         function checkScreenSize() {
             if (window.innerWidth < 500) {
-                document.getElementById("errorScreen").style.display = "flex"; 
-                document.getElementById("chatContainer").style.display = "none"; 
-                return false; 
+                document.getElementById("errorScreen").style.display = "flex";
+                document.getElementById("chatContainer").style.display = "none";
+                return false;
             }
-            document.getElementById("errorScreen").style.display = "none"; 
-            return true; 
+            document.getElementById("errorScreen").style.display = "none";
+            return true;
         }
 
         function resizeScreen() {
-            window.location.reload(); 
+            window.location.reload();
         }
 
         window.onload = function () {
@@ -395,11 +409,10 @@
                         userNames[data.name] = { clientId: member.id };
                         showJoinNotification(data.name);
                     }
-
                     // Play notification sound for incoming messages if it's not from the sender
                     if (member.id !== drone.clientId) {
                         const notificationSound = document.getElementById('notificationSound');
-                        notificationSound.volume = 1.0; // Set the volume (1.0 is max)
+                        notificationSound.volume = 1.0;
                         notificationSound.play().catch(error => {
                             console.error('Audio playback failed:', error);
                         });
@@ -408,22 +421,24 @@
             });
         }
 
-        function sendMessage() {
+        function sendMessage(text) {
             const messageInput = document.getElementById('messageInput');
-            const text = messageInput.value.trim();
+            const messageText = text || messageInput.value.trim();
             const timestamp = new Date().toLocaleTimeString();
 
-            if (text === '') return;
+            if (messageText === '') return;
 
-            messageInput.value = '';
+            if (!text) {
+                messageInput.value = ''; // Clear input field if sending manually
+            }
+
             drone.publish({
                 room: `observable-${roomCode}`,
-                message: { text, name: userName, timestamp }
+                message: { text: messageText, name: userName, timestamp }
             });
         }
 
         function formatLinks(text) {
-            // Regular expression to find URLs
             const urlPattern = /(https?:\/\/[^\s]+)/g;
             return text.replace(urlPattern, '<a href="$1" class="link" target="_blank">$1</a>');
         }
@@ -440,7 +455,7 @@
                 <img src="nexus.png" alt="${name}'s Avatar">
                 <div>
                     <span>${name}</span>
-                    <p>${formatLinks(text)}</p> <!-- Format the message text for links -->
+                    <p>${formatLinks(text)}</p> 
                 </div>`;
             messages.appendChild(messageDiv);
             messages.scrollTop = messages.scrollHeight; // Auto-scroll to the latest message
@@ -454,6 +469,65 @@
                 joinNotification.style.display = 'none';
             }, 3000);
         }
+
+        function startRecording() {
+            if (!('webkitSpeechRecognition' in window)) {
+                alert("Your browser does not support speech recognition.");
+                return;
+            }
+
+            recognition = new webkitSpeechRecognition();
+            recognition.lang = 'en-US';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            recognition.onstart = () => {
+                isRecording = true;
+                document.getElementById('micIcon').classList.remove('fa-microphone-slash');
+                document.getElementById('micIcon').classList.add('fa-microphone');
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                sendMessage(transcript);
+                stopRecording(); // Stop recording once a message is sent
+            };
+
+            recognition.onend = () => {
+                isRecording = false;
+                document.getElementById('micIcon').classList.remove('fa-microphone');
+                document.getElementById('micIcon').classList.add('fa-microphone-slash');
+            };
+
+            recognition.onerror = (event) => {
+                console.error("Speech recognition error:", event.error);
+                stopRecording();
+            };
+
+            recognition.start();
+        }
+
+        function stopRecording() {
+            if (isRecording && recognition) {
+                recognition.stop();
+            }
+        }
+
+        document.getElementById('micButton').onclick = function () {
+            if (isRecording) {
+                stopRecording();
+            } else {
+                // Request microphone access
+                navigator.mediaDevices.getUserMedia({ audio: true })
+                    .then(() => {
+                        startRecording();
+                    })
+                    .catch(error => {
+                        console.error("Microphone access denied:", error);
+                        alert("Microphone access is required for voice input.");
+                    });
+            }
+        };
 
         particlesJS("particles-js", {
             "particles": {
