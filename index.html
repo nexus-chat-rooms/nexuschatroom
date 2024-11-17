@@ -292,6 +292,13 @@
                 width: 100%;
             }
         }
+
+        /* New CSS for Links */
+        .link {
+            color: red;
+            text-decoration: underline; /* Keep it underlined */
+            cursor: pointer; /* Show hand cursor */
+        }
     </style>
 </head>
 
@@ -415,6 +422,12 @@
             });
         }
 
+        function formatLinks(text) {
+            // Regular expression to find URLs
+            const urlPattern = /(https?:\/\/[^\s]+)/g;
+            return text.replace(urlPattern, '<a href="$1" class="link" target="_blank">$1</a>');
+        }
+
         function addMessageToList(text, name, isSelf) {
             const messages = document.getElementById('messages');
             const messageDiv = document.createElement('div');
@@ -427,7 +440,7 @@
                 <img src="nexus.png" alt="${name}'s Avatar">
                 <div>
                     <span>${name}</span>
-                    <p>${text}</p>
+                    <p>${formatLinks(text)}</p> <!-- Format the message text for links -->
                 </div>`;
             messages.appendChild(messageDiv);
             messages.scrollTop = messages.scrollHeight; // Auto-scroll to the latest message
