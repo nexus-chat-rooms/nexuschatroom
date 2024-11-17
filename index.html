@@ -75,7 +75,7 @@
             flex-direction: column;
             gap: 15px;
             margin-bottom: 20px;
-            border: 2px solid #3b82f6; /* Add border for better distinction */
+            border: 2px solid #3b82f6;
         }
 
         .message {
@@ -155,7 +155,7 @@
 
         .input-area input[type="submit"] {
             padding: 15px 20px;
-            background: #3b82f6; /* Bright blue button */
+            background: #3b82f6;
             color: #ffffff;
             border: none;
             border-radius: 20px;
@@ -164,7 +164,7 @@
         }
 
         .input-area input[type="submit"]:hover {
-            background: #1e90ff; /* Darker blue on hover */
+            background: #1e90ff;
             transform: scale(1.05);
         }
 
@@ -207,7 +207,7 @@
 
         .modal-content button {
             padding: 15px 25px;
-            background: #3b82f6; /* Bright blue */
+            background: #3b82f6;
             color: white;
             border: none;
             border-radius: 5px;
@@ -217,7 +217,7 @@
         }
 
         .modal-content button:hover {
-            background: #1e90ff; /* Darker blue */
+            background: #1e90ff;
             transform: scale(1.05);
         }
 
@@ -230,9 +230,9 @@
             padding: 10px 20px;
             border-radius: 10px;
             color: #ffffff;
-            display: none; /* Hidden by default */
+            display: none;
             z-index: 20;
-            animation: fadeIn 0.5s; /* Optional fade-in */
+            animation: fadeIn 0.5s;
         }
 
         @keyframes fadeIn {
@@ -252,7 +252,7 @@
         }
 
         .messages::-webkit-scrollbar-thumb {
-            background: #3b82f6; /* Bright blue scrollbar */
+            background: #3b82f6;
             border-radius: 10px;
         }
 
@@ -307,6 +307,8 @@
         </div>
     </div>
 
+    <audio id="notificationSound" src="notification.mp3" preload="auto"></audio> <!-- Add sound notification -->
+
     <div class="container" id="chatContainer" style="display: none;">
         <div class="header">
             <h1 id="roomName">Room</h1>
@@ -336,16 +338,16 @@
 
         function checkScreenSize() {
             if (window.innerWidth < 500) {
-                document.getElementById("errorScreen").style.display = "flex"; // Show the error screen
-                document.getElementById("chatContainer").style.display = "none"; // Hide chat container
-                return false; // Deny access
+                document.getElementById("errorScreen").style.display = "flex"; 
+                document.getElementById("chatContainer").style.display = "none"; 
+                return false; 
             }
-            document.getElementById("errorScreen").style.display = "none"; // Hide error screen
-            return true; // Allow access
+            document.getElementById("errorScreen").style.display = "none"; 
+            return true; 
         }
 
         function resizeScreen() {
-            window.location.reload(); // Reload the page to give user access to resize
+            window.location.reload(); 
         }
 
         window.onload = function () {
@@ -385,6 +387,15 @@
                     if (!userNames[data.name]) {
                         userNames[data.name] = { clientId: member.id };
                         showJoinNotification(data.name);
+                    }
+
+                    // Play notification sound for incoming messages if it's not from the sender
+                    if (member.id !== drone.clientId) {
+                        const notificationSound = document.getElementById('notificationSound');
+                        notificationSound.volume = 1.0; // Set the volume (1.0 is max)
+                        notificationSound.play().catch(error => {
+                            console.error('Audio playback failed:', error);
+                        });
                     }
                 }
             });
