@@ -6,8 +6,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexus Chat | Page Not Found</title>
-    <!-- Link to Google Fonts for Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body, html {
             margin: 0;
@@ -16,33 +16,94 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center; /* Center items vertically */
-            background-color: black; /* Set background to black */
-            color: white; /* Set text color to white */
-            font-family: 'Poppins', sans-serif; /* Use Poppins font */
-            text-align: center; /* Center text */
+            justify-content: center;
+            background-color: black; /* Changed to solid black background */
+            color: #ffffff; 
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            overflow: hidden;
         }
-        .message {
-            font-size: 48px; /* Font size for the text */
-            font-weight: bold; /* Make text bold */
-            margin-bottom: 20px; /* Space between text and image */
+        h1 {
+            font-size: 100px;
+            margin: 0;
+            animation: fadeIn 1s ease; 
+        }
+        p {
+            font-size: 28px; 
+            margin: 10px 0 40px; 
+            color: #d1d1d1;
+            animation: fadeIn 1.5s ease; 
         }
         .image-container {
-            max-width: 90%; /* Resize the image to not exceed 90% of the container */
-            height: auto; /* Keep the aspect ratio */
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            max-width: 90%; 
+            margin: 0 auto; 
+            animation: bounceIn 2s; 
         }
         .image-container img {
-            width: 100%; /* Make the image take the full width of the container */
-            max-width: 600px; /* Set a max-width for the image */
-            height: auto; /* Keep the aspect ratio */
-            border-radius: 10px; /* Optional: rounded corners */
+            width: 100%;
+            max-width: 600px; 
+            height: auto;
+            border-radius: 15px; 
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.4); /* Adjusted shadow for white text */
+        }
+        .home-button {
+            background-color: #007BFF; 
+            color: white; 
+            border: none;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            border-radius: 30px; 
+            font-size: 18px; 
+            transition: background-color 0.3s, transform 0.2s; 
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.3); /* Shadow effect for button */
+        }
+        .home-button:hover {
+            background-color: #0056b3; 
+            transform: translateY(-2px); 
+        }
+        .home-icon {
+            margin-right: 8px; 
+            font-size: 20px; 
+        }
+        footer {
+            position: absolute; 
+            bottom: 20px; 
+            font-size: 14px; 
+            color: #d1d1d1; 
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
     </style>
 </head>
 <body>
-    <div class="message">Looks like you are lost!</div>
-    <div class="image-container">
-        <img src="nexus404.png" alt="404"> <!-- Change to your image path -->
+    <div>
+        <h1>404</h1>
+        <p>Oops! It seems you are lost.</p>
+        <div class="image-container">
+            <img src="nexus404.png" alt="404 Error"> <!-- Change to your image path -->
+        </div>
+        <a class="home-button" href="https://nexus-chat-rooms.github.io/nexuschatroom">
+            <i class="fas fa-home home-icon"></i>
+            Return Home
+        </a>
     </div>
+    <footer>
+        © 2024 Nexus Chat. All rights reserved.
+    </footer>
 </body>
 </html>
