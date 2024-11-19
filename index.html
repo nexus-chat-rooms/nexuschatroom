@@ -1,7 +1,624 @@
+
 <link rel="shortcut icon" type="image/png" href="https://i.ibb.co/xsfVwqQ/Untitled-design-51.png">
 
-<!doctype html>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-<title>Nexus Chat Rooms</title>
-<h1>We are updating and will be back up soon!</h1>
-<p>Thanks for visiting. Come back later.</p>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Chat Rooms</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.scaledrone.com/scaledrone.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- FontAwesome for icons -->
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            background-color: #121212;
+        }
+
+        .particles-js {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            background: rgba(75, 0, 130, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: #ffffff;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: #bbb;
+        }
+
+        .messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: rgba(30, 30, 30, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+            border: 2px solid #3b82f6;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 15px;
+            background: #1a1a1a;
+            max-width: 70%;
+            display: flex;
+            align-items: flex-start;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.8);
+            animation: fadeIn 0.3s;
+            position: relative;
+        }
+
+        .message.self {
+            background: #3b82f6;
+            margin-left: auto;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 1);
+        }
+
+        .timestamp {
+            font-size: 11px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 5px;
+            color: white;
+            margin-bottom: 5px;
+            text-align: center;
+            max-width: 100px;
+        }
+
+        .message img {
+            margin-right: 10px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .message span {
+            font-weight: bold;
+            color: #bbb;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .message p {
+            margin: 0;
+            color: #ffffff;
+        }
+
+        .input-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 10px;
+        }
+
+        .input-area input[type="text"] {
+            flex-grow: 1;
+            border: none;
+            padding: 15px;
+            background: rgba(75, 0, 130, 0.5);
+            color: #ffffff;
+            border-radius: 20px;
+            font-size: 16px;
+            transition: background 0.3s;
+            margin-right: 10px;
+        }
+
+        .input-area input[type="text"]:focus {
+            background: rgba(75, 0, 130, 0.8);
+            outline: none;
+        }
+
+        .input-area input[type="submit"] {
+            padding: 15px 20px;
+            background: #3b82f6;
+            color: #ffffff;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .input-area input[type="submit"]:hover {
+            background: #1e90ff;
+            transform: scale(1.05);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .modal-content {
+            background: #23272a;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .modal-content input[type="text"] {
+            margin: 10px 0;
+            padding: 15px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            background: #2f3136;
+            color: white;
+            transition: background 0.3s;
+        }
+
+        .modal-content input[type="text"]:focus {
+            background: #3c3f44;
+        }
+
+        .modal-content button {
+            padding: 15px 25px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .modal-content button:hover {
+            background: #1e90ff;
+            transform: scale(1.05);
+        }
+
+        .join-notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(75, 0, 130, 0.7);
+            padding: 10px 20px;
+            border-radius: 10px;
+            color: #ffffff;
+            display: none;
+            z-index: 20;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .messages::-webkit-scrollbar-thumb {
+            background: #3b82f6;
+            border-radius: 10px;
+        }
+
+        .messages::-webkit-scrollbar-track {
+            background: rgba(75, 0, 130, 0.2);
+        }
+
+        .error-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            z-index: 30;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .input-area {
+                flex-direction: column;
+            }
+
+            .input-area input[type="text"] {
+                margin-bottom: 10px;
+                width: auto;
+            }
+
+            .input-area input[type="submit"] {
+                width: 100%;
+            }
+        }
+
+        /* Styles for microphone button */
+        .mic-button {
+            margin-left: 10px; /* Space between the input and mic button */
+            margin-right: 10px; /* Space to the send button */
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #ffffff;
+            font-size: 24px; /* Adjust size to match your design */
+        }
+
+        .mic-button:disabled {
+            color: rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="particles-js" class="particles-js"></div>
+    <div class="modal" id="roomModal">
+        <div class="modal-content">
+            <h2>Join a Room</h2>
+            <input type="text" id="roomCodeInput" placeholder="Room Code" required aria-label="Room Code">
+            <input type="text" id="usernameInput" placeholder="Your Name" required aria-label="Your Name">
+            <button onclick="joinRoom()">Join</button>
+        </div>
+    </div>
+
+    <audio id="notificationSound" src="notification.mp3" preload="auto"></audio>
+
+    <div class="container" id="chatContainer" style="display: none;">
+        <div class="header">
+            <h1 id="roomName">Room</h1>
+            <p id="userInfo">Logged in as: <span id="userNameDisplay"></span></p>
+        </div>
+        <div class="messages" id="messages"></div>
+        <form class="input-area" onsubmit="return false;">
+            <input id="messageInput" placeholder="Type a message..." type="text" required aria-label="Message Input" />
+            <button class="mic-button" type="button" id="micButton" aria-label="Voice Input">
+                <i class="fas fa-microphone-slash" id="micIcon"></i>
+            </button>
+            <input type="submit" value="Send" onclick="sendMessage()" aria-label="Send Message">
+        </form>
+        <div class="join-notification" id="joinNotification"></div>
+    </div>
+
+    <div class="error-screen" id="errorScreen">
+        <h1>404 ERROR FOUND</h1>
+        <p>Nexus chat cannot allow access to your device as you are too zoomed in!</p>
+        <button onclick="resizeScreen()">Reload or shrink your screen size!</button>
+    </div>
+
+    <script>
+        const CLIENT_ID = 'aSEKMcR4GsEZONob';
+        const drone = new ScaleDrone(CLIENT_ID);
+        let room;
+        let userName = '';
+        let roomCode = '';
+        const userNames = {};
+        let isRecording = false; // Track voice recording status
+        let recognition; // Speech recognition instance
+
+        function checkScreenSize() {
+            if (window.innerWidth < 500) {
+                document.getElementById("errorScreen").style.display = "flex";
+                document.getElementById("chatContainer").style.display = "none";
+                return false;
+            }
+            document.getElementById("errorScreen").style.display = "none";
+            return true;
+        }
+
+        function resizeScreen() {
+            window.location.reload();
+        }
+
+        window.onload = function () {
+            checkScreenSize();
+        };
+
+        window.onresize = function () {
+            checkScreenSize();
+        };
+
+        function joinRoom() {
+            userName = document.getElementById('usernameInput').value.trim();
+            roomCode = document.getElementById('roomCodeInput').value.trim();
+
+            if (!userName || !roomCode || /[^a-zA-Z0-9]/.test(userName)) {
+                alert('Please enter a valid username and room code without special characters!');
+                return;
+            }
+
+            if (userNames[userName]) {
+                alert('This username is already taken. Please choose another one.');
+                return;
+            }
+
+            document.getElementById('roomModal').style.display = 'none';
+            document.getElementById('chatContainer').style.display = 'flex';
+            document.getElementById('userNameDisplay').textContent = userName;
+            document.getElementById('roomName').textContent = `Room: ${roomCode}`;
+
+            userNames[userName] = { clientId: drone.clientId };
+
+            room = drone.subscribe(`observable-${roomCode}`);
+
+            room.on('data', (data, member) => {
+                if (data) {
+                    addMessageToList(data.text, data.name, member.id === drone.clientId);
+                    if (!userNames[data.name]) {
+                        userNames[data.name] = { clientId: member.id };
+                        showJoinNotification(data.name);
+                    }
+                    // Play notification sound for incoming messages if it's not from the sender
+                    if (member.id !== drone.clientId) {
+                        const notificationSound = document.getElementById('notificationSound');
+                        notificationSound.volume = 1.0;
+                        notificationSound.play().catch(error => {
+                            console.error('Audio playback failed:', error);
+                        });
+                    }
+                }
+            });
+        }
+
+        function sendMessage(text) {
+            const messageInput = document.getElementById('messageInput');
+            const messageText = text || messageInput.value.trim();
+            const timestamp = new Date().toLocaleTimeString();
+
+            if (messageText === '') return;
+
+            if (!text) {
+                messageInput.value = ''; // Clear input field if sending manually
+            }
+
+            drone.publish({
+                room: `observable-${roomCode}`,
+                message: { text: messageText, name: userName, timestamp }
+            });
+        }
+
+        function formatLinks(text) {
+            const urlPattern = /(https?:\/\/[^\s]+)/g;
+            return text.replace(urlPattern, '<a href="$1" class="link" target="_blank">$1</a>');
+        }
+
+        function addMessageToList(text, name, isSelf) {
+            const messages = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            if (isSelf) {
+                messageDiv.classList.add('self');
+            }
+            messageDiv.innerHTML = `
+                <div class="timestamp">${new Date().toLocaleTimeString()}</div>
+                <img src="nexus.png" alt="${name}'s Avatar">
+                <div>
+                    <span>${name}</span>
+                    <p>${formatLinks(text)}</p> 
+                </div>`;
+            messages.appendChild(messageDiv);
+            messages.scrollTop = messages.scrollHeight; // Auto-scroll to the latest message
+        }
+
+        function showJoinNotification(name) {
+            const joinNotification = document.getElementById('joinNotification');
+            joinNotification.textContent = `${name} has joined the chatroom.`;
+            joinNotification.style.display = 'block';
+            setTimeout(() => {
+                joinNotification.style.display = 'none';
+            }, 3000);
+        }
+
+        function startRecording() {
+            if (!('webkitSpeechRecognition' in window)) {
+                alert("Your browser does not support speech recognition.");
+                return;
+            }
+
+            recognition = new webkitSpeechRecognition();
+            recognition.lang = 'en-US';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            recognition.onstart = () => {
+                isRecording = true;
+                document.getElementById('micIcon').classList.remove('fa-microphone-slash');
+                document.getElementById('micIcon').classList.add('fa-microphone');
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                sendMessage(transcript);
+                stopRecording(); // Stop recording once a message is sent
+            };
+
+            recognition.onend = () => {
+                isRecording = false;
+                document.getElementById('micIcon').classList.remove('fa-microphone');
+                document.getElementById('micIcon').classList.add('fa-microphone-slash');
+            };
+
+            recognition.onerror = (event) => {
+                console.error("Speech recognition error:", event.error);
+                stopRecording();
+            };
+
+            recognition.start();
+        }
+
+        function stopRecording() {
+            if (isRecording && recognition) {
+                recognition.stop();
+            }
+        }
+
+        document.getElementById('micButton').onclick = function () {
+            if (isRecording) {
+                stopRecording();
+            } else {
+                // Request microphone access
+                navigator.mediaDevices.getUserMedia({ audio: true })
+                    .then(() => {
+                        startRecording();
+                    })
+                    .catch(error => {
+                        console.error("Microphone access denied:", error);
+                        alert("Microphone access is required for voice input.");
+                    });
+            }
+        };
+
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 100,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#ffffff"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    },
+                    "polygon": {
+                        "nb_sides": 5
+                    }
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": false
+                },
+                "size": {
+                    "value": 3,
+                    "random": true
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#ffffff",
+                    "opacity": 0.4,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 6,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false
+                }
+            },
+            "interactivity": {
+                "detect_on": "window",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "repulse"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 140,
+                        "line_linked": {
+                            "opacity": 1
+                        }
+                    },
+                    "bubble": {
+                        "distance": 400,
+                        "size": 40,
+                        "duration": 2,
+                        "opacity": 8,
+                        "speed": 3
+                    },
+                    "repulse": {
+                        "distance": 200,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    },
+                    "remove": {
+                        "particles_nb": 2
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+    </script>
+</body>
+
+</html>
