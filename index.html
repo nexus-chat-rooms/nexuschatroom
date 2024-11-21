@@ -338,6 +338,7 @@
     <button class="credits-button" onclick="window.location.href='credit.html'">
         <i class="fas fa-info-circle"></i> Credits
     </button>
+    
     <div class="modal" id="roomModal">
         <div class="modal-content">
             <h2>Join a Room</h2>
@@ -397,12 +398,25 @@
 
         window.onload = function () {
             checkScreenSize();
-            // Play background music at volume 0.4 (40%)
+            // Create a button to start background music
             const backgroundMusic = document.getElementById('backgroundMusic');
-            backgroundMusic.volume = 0.4; // Sets volume to 40%
-            backgroundMusic.play().catch(error => {
-                console.error('Audio playback failed:', error);
-            });
+
+            // Attempt to play the music
+            backgroundMusic.volume = 0.4; // Adjust volume as needed
+
+            // The following function will prompt the user to enable audio on first click
+            const playMusic = () => {
+                backgroundMusic.play().catch(error => {
+                    console.error('Audio playback failed:', error);
+                    alert("Please enable sound to enjoy background music.");
+                });
+            };
+
+            // Add event listener to play music when the background is clicked
+            document.body.addEventListener('click', playMusic, { once: true });
+
+            // Optionally, display a message to encourage interaction
+            alert("Click anywhere to enable background music!");
         };
 
         window.onresize = function () {
