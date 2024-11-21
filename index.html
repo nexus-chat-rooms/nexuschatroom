@@ -314,6 +314,7 @@
 <body>
 
     <div id="particles-js" class="particles-js"></div>
+    <audio id="backgroundMusic" src="5.ogg" loop preload="auto"></audio>
     <div class="modal" id="roomModal">
         <div class="modal-content">
             <h2>Join a Room</h2>
@@ -373,6 +374,12 @@
 
         window.onload = function () {
             checkScreenSize();
+            // Play background music at volume 0.4 (40%)
+            const backgroundMusic = document.getElementById('backgroundMusic');
+            backgroundMusic.volume = 0.4; // Sets volume to 40%
+            backgroundMusic.play().catch(error => {
+                console.error('Audio playback failed:', error);
+            });
         };
 
         window.onresize = function () {
