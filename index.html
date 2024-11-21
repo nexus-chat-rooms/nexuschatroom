@@ -308,13 +308,36 @@
         .mic-button:disabled {
             color: rgba(255, 255, 255, 0.5);
         }
+
+        /* Styles for credits button */
+        .credits-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            color: white;
+            font-size: 18px;
+            transition: background 0.3s ease;
+            z-index: 20; /* Ensure it is above other elements */
+        }
+
+        .credits-button:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
     </style>
 </head>
 
 <body>
 
     <div id="particles-js" class="particles-js"></div>
-    <audio id="backgroundMusic" src="5.ogg" loop preload="auto"></audio>
+    <audio id="backgroundMusic" src="background-music.mp3" loop preload="auto"></audio>
+    <button class="credits-button" onclick="window.location.href='credit.html'">
+        <i class="fas fa-info-circle"></i> Credits
+    </button>
     <div class="modal" id="roomModal">
         <div class="modal-content">
             <h2>Join a Room</h2>
