@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexus Chat Rooms</title>
+    <link rel="icon" type="image/png" href="https://i.ibb.co/2FwztDC/nexus.png">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdn.scaledrone.com/scaledrone.min.js"></script>
@@ -309,6 +310,26 @@
             color: rgba(255, 255, 255, 0.5);
         }
 
+        /* Styles for music button */
+        .music-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            color: white;
+            font-size: 20px;
+            transition: background 0.3s ease;
+            z-index: 30; /* Ensure it is above other elements */
+        }
+
+        .music-button:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
         /* Styles for credits button */
         .credits-button {
             position: absolute;
@@ -335,6 +356,11 @@
 
     <div id="particles-js" class="particles-js"></div>
     <audio id="backgroundMusic" src="5.ogg" loop preload="auto"></audio>
+    
+    <button id="musicMuteButton" class="music-button" aria-label="Mute/Unmute Music">
+        <i class="fas fa-volume-up"></i>
+    </button>
+
     <button class="credits-button" onclick="window.location.href='credit.html'">
         <i class="fas fa-info-circle"></i> Credits
     </button>
@@ -381,6 +407,7 @@
         const userNames = {};
         let isRecording = false; // Track voice recording status
         let recognition; // Speech recognition instance
+        let isMusicMuted = false; // Track music mute status
 
         function checkScreenSize() {
             if (window.innerWidth < 500) {
@@ -398,10 +425,7 @@
 
         window.onload = function () {
             checkScreenSize();
-            // Create a button to start background music
             const backgroundMusic = document.getElementById('backgroundMusic');
-
-            // Attempt to play the music
             backgroundMusic.volume = 0.4; // Adjust volume as needed
 
             // Add event listener to play music when the background is clicked
@@ -564,6 +588,22 @@
                         alert("Microphone access is required for voice input.");
                     });
             }
+        };
+
+        document.getElementById('musicMuteButton').onclick = function () {
+            const backgroundMusic = document.getElementById('backgroundMusic');
+
+            if (isMusicMuted) {
+                backgroundMusic.play().catch(error => {
+                    console.error('Audio playback failed:', error);
+                });
+                this.innerHTML = '<i class="fas fa-volume-up"></i>'; // Change icon to "unmuted"
+            } else {
+                backgroundMusic.pause();
+                this.innerHTML = '<i class="fas fa-volume-mute"></i>'; // Change icon to "muted"
+            }
+
+            isMusicMuted = !isMusicMuted; // Toggle mute status
         };
 
         particlesJS("particles-js", {
