@@ -12,8 +12,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdn.scaledrone.com/scaledrone.min.js"></script>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
+        /* Global styles */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -26,7 +27,7 @@
             height: 100vh;
             overflow: hidden;
             position: relative;
-            background-color: #000000;
+            background-color: #000000; /* Default background color */
         }
 
         .particles-js {
@@ -38,6 +39,7 @@
             z-index: 0;
         }
 
+        /* Container and header styles */
         .container {
             position: relative;
             z-index: 10;
@@ -66,6 +68,7 @@
             color: #bbb;
         }
 
+        /* Messages and input styles */
         .messages {
             flex-grow: 1;
             overflow-y: auto;
@@ -170,6 +173,7 @@
             transform: scale(1.05);
         }
 
+        /* Modal styles */
         .modal {
             position: fixed;
             top: 0;
@@ -190,6 +194,7 @@
             text-align: center;
             width: 90%;
             max-width: 400px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
         }
 
         .modal-content input[type="text"] {
@@ -221,6 +226,11 @@
         .modal-content button:hover {
             background: #1e90ff;
             transform: scale(1.05);
+        }
+
+        .modal-content h2,
+        .modal-content p {
+            color: black; /* Text color for the settings modal */
         }
 
         .join-notification {
@@ -295,22 +305,21 @@
             }
         }
 
-        /* Styles for microphone button */
         .mic-button {
-            margin-left: 10px; /* Space between the input and mic button */
-            margin-right: 10px; /* Space to the send button */
+            margin-left: 10px;
+            margin-right: 10px;
             background: none;
             border: none;
             cursor: pointer;
             color: #ffffff;
-            font-size: 24px; /* Adjust size to match your design */
+            font-size: 24px;
         }
 
         .mic-button:disabled {
             color: rgba(255, 255, 255, 0.5);
         }
 
-        /* Styles for music button */
+        /* Button styles */
         .music-button {
             position: absolute;
             top: 20px;
@@ -323,32 +332,218 @@
             color: white;
             font-size: 20px;
             transition: background 0.3s ease;
-            z-index: 30; /* Ensure it is above other elements */
+            z-index: 30;
         }
 
         .music-button:hover {
             background: rgba(255, 255, 255, 0.5);
         }
 
-        /* Styles for credits button */
-        .credits-button {
+        .settings-button {
             position: absolute;
             top: 20px;
-            right: 20px;
+            left: 70px;
             background: rgba(255, 255, 255, 0.2);
             border: none;
             border-radius: 5px;
             padding: 10px;
             cursor: pointer;
             color: white;
-            font-size: 18px;
+            font-size: 20px;
             transition: background 0.3s ease;
-            z-index: 20; /* Ensure it is above other elements */
+            z-index: 30;
+        }
+
+        .settings-button:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .credits-button {
+            position: absolute;
+            top: 20px;
+            left: 120px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            z-index: 30;
         }
 
         .credits-button:hover {
             background: rgba(255, 255, 255, 0.5);
         }
+
+        /* Theme modal styles */
+        .theme-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none; /* Initially hidden */
+            justify-content: center;
+            align-items: center;
+            z-index: 50;
+        }
+
+        .theme-modal-content {
+            background: #2f3136;
+            border-radius: 10px;
+            padding: 30px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .theme-button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-align: center;
+        }
+
+        .theme-button:hover {
+            background: rgba(75, 0, 130, 0.8);
+        }
+
+        /* Theme-specific styles */
+        .mocha {
+            --bg-color: #3e2723;
+            --header-bg: #6d4c41;
+            --card-bg: #795548;
+            --button-bg: #4a148c;
+            --button-hover-bg: #6a1b9a;
+            --icon-color: #ffffff; /* Icon color for mocha */
+        }
+
+        .ocean {
+            --bg-color: #006064;
+            --header-bg: #004d40;
+            --card-bg: #00796b;
+            --button-bg: #009688;
+            --button-hover-bg: #80cbc4;
+            --icon-color: #ffffff; /* Icon color for ocean */
+        }
+
+        .volcano {
+            --bg-color: #ffebee;
+            --header-bg: #f44336;
+            --card-bg: #e57373;
+            --button-bg: #d32f2f;
+            --button-hover-bg: #f44336;
+            --icon-color: #ffffff; /* Icon color for volcano */
+        }
+
+        .sunset {
+            --bg-color: #fce4ec;
+            --header-bg: #ad1457;
+            --card-bg: #f50057;
+            --button-bg: #d81b60;
+            --button-hover-bg: #c2185b;
+            --icon-color: #ffffff; /* Icon color for sunset */
+        }
+
+        .forest {
+            --bg-color: #d0f0c0;
+            --header-bg: #4caf50;
+            --card-bg: #81c784;
+            --button-bg: #388e3c;
+            --button-hover-bg: #66bb6a;
+            --icon-color: #ffffff; /* Icon color for forest */
+        }
+
+        .retro {
+            --bg-color: #ffeb3b;
+            --header-bg: #f57f17;
+            --card-bg: #ffb300;
+            --button-bg: #ff6f20;
+            --button-hover-bg: #d84315;
+            --icon-color: #ffffff; /* Icon color for retro */
+        }
+
+        /* New themes */
+        .cyberpunk {
+            --bg-color: #0f1011;
+            --header-bg: #1e1e1e;
+            --card-bg: #3f3f3f;
+            --button-bg: #ff18a8;
+            --button-hover-bg: #ff5f75;
+            --icon-color: #ff18a8; /* Icon color for cyberpunk */
+        }
+
+        .pastel {
+            --bg-color: #ffefdb;
+            --header-bg: #ff9a9e;
+            --card-bg: #fad0c4;
+            --button-bg: #ff9a9e;
+            --button-hover-bg: #fecfef;
+            --icon-color: #ff6f69; /* Icon color for pastel */
+        }
+
+        .darkmode {
+            --bg-color: #121212;
+            --header-bg: #1e1e1e;
+            --card-bg: #212121;
+            --button-bg: #bb86fc;
+            --button-hover-bg: #3700b3;
+            --icon-color: #bb86fc; /* Icon color for dark mode */
+        }
+
+        .neon {
+            --bg-color: #222;
+            --header-bg: #444;
+            --card-bg: #555;
+            --button-bg: #00ffcc;
+            --button-hover-bg: #007f7f;
+            --icon-color: #00ffcc; /* Icon color for neon */
+        }
+
+        /* Apply themes */
+        body {
+            background-color: var(--bg-color, #000000);
+        }
+
+        .header {
+            background: var(--header-bg, rgba(75, 0, 130, 0.8));
+        }
+
+        .messages {
+            background: var(--card-bg, rgba(30, 30, 30, 0.9));
+            border-color: var(--button-bg, #3b82f6);
+        }
+
+        .input-area input[type="submit"] {
+            background: var(--button-bg, #3b82f6);
+        }
+
+        .input-area input[type="submit"]:hover {
+            background: var(--button-hover-bg, #1e90ff);
+        }
+
+        .mic-button {
+            color: var(--icon-color, #ffffff);
+        }
+
+        .mic-button:disabled {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .music-button,
+        .settings-button,
+        .credits-button {
+            color: var(--icon-color, #ffffff);
+        }
+
     </style>
 </head>
 
@@ -361,10 +556,14 @@
         <i class="fas fa-volume-up"></i>
     </button>
 
-    <button class="credits-button" onclick="window.location.href='credit.html'">
-        <i class="fas fa-info-circle"></i> Credits
+    <button class="settings-button" id="settingsButton" aria-label="Change Theme">
+        <i class="fas fa-cog"></i>
     </button>
-    
+
+    <button class="credits-button" id="creditsButton" aria-label="Show Credits" onclick="window.open('https://nexus-chat-rooms.github.io/nexuschatroom/credit', '_blank');">
+        <i class="fas fa-info-circle"></i>
+    </button>
+
     <div class="modal" id="roomModal">
         <div class="modal-content">
             <h2>Join a Room</h2>
@@ -375,6 +574,23 @@
     </div>
 
     <audio id="notificationSound" src="notification.mp3" preload="auto"></audio>
+
+    <div class="theme-modal" id="themeModal">
+        <div class="theme-modal-content">
+            <h2>Select a Theme</h2>
+            <button class="theme-button mocha" onclick="selectTheme('mocha')">Mocha</button>
+            <button class="theme-button ocean" onclick="selectTheme('ocean')">Ocean</button>
+            <button class="theme-button volcano" onclick="selectTheme('volcano')">Volcano</button>
+            <button class="theme-button sunset" onclick="selectTheme('sunset')">Sunset</button>
+            <button class="theme-button forest" onclick="selectTheme('forest')">Forest</button>
+            <button class="theme-button retro" onclick="selectTheme('retro')">Retro</button>
+            <button class="theme-button cyberpunk" onclick="selectTheme('cyberpunk')">Cyberpunk</button>
+            <button class="theme-button pastel" onclick="selectTheme('pastel')">Pastel</button>
+            <button class="theme-button darkmode" onclick="selectTheme('darkmode')">Dark Mode</button>
+            <button class="theme-button neon" onclick="selectTheme('neon')">Neon</button>
+            <button class="theme-button" onclick="closeThemeModal()">Close</button>
+        </div>
+    </div>
 
     <div class="container" id="chatContainer" style="display: none;">
         <div class="header">
@@ -428,12 +644,11 @@
             const backgroundMusic = document.getElementById('backgroundMusic');
             backgroundMusic.volume = 0.4; // Adjust volume as needed
 
-            // Add event listener to play music when the background is clicked
             document.body.addEventListener('click', () => {
                 backgroundMusic.play().catch(error => {
                     console.error('Audio playback failed:', error);
                 });
-            }, { once: true }); // Ensure this only runs once
+            }, { once: true });
         };
 
         window.onresize = function () {
@@ -470,7 +685,6 @@
                         userNames[data.name] = { clientId: member.id };
                         showJoinNotification(data.name);
                     }
-                    // Play notification sound for incoming messages if it's not from the sender
                     if (member.id !== drone.clientId) {
                         const notificationSound = document.getElementById('notificationSound');
                         notificationSound.volume = 1.0;
@@ -578,7 +792,6 @@
             if (isRecording) {
                 stopRecording();
             } else {
-                // Request microphone access
                 navigator.mediaDevices.getUserMedia({ audio: true })
                     .then(() => {
                         startRecording();
@@ -606,6 +819,26 @@
             isMusicMuted = !isMusicMuted; // Toggle mute status
         };
 
+        // Theme selection logic
+        document.getElementById('settingsButton').onclick = function () {
+            document.getElementById('themeModal').style.display = 'flex';
+        };
+
+        function closeThemeModal() {
+            document.getElementById('themeModal').style.display = 'none';
+        }
+
+        function selectTheme(theme) {
+            // Remove all theme classes from body
+            document.body.classList.remove('mocha', 'ocean', 'volcano', 'sunset', 'forest', 'retro', 'cyberpunk', 'pastel', 'darkmode', 'neon');
+
+            // Add the selected theme class
+            document.body.classList.add(theme);
+
+            closeThemeModal();
+        }
+
+        // particlesJS setup
         particlesJS("particles-js", {
             "particles": {
                 "number": {
