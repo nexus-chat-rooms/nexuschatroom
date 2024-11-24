@@ -1,5 +1,5 @@
 # NEXUS CHAT ROOMS 💬 ![alt text](https://nexus-chat-rooms.github.io/nexuschatroom/nexus.png)
-Fork our site by clicking fork!
+Fork our site by clicking fork! Also give the repository a star! It helps out a lot!
 
 # Online🌐
 🌐Instantaneous, online, realtime communication platform for ALL devices!🌐 ![alt text](https://nexus-chat-rooms.github.io/nexuschatroom/onlinereadme.jpeg)
