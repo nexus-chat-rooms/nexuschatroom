@@ -427,6 +427,26 @@
             background: rgba(255, 255, 255, 0.5);
         }
 
+        /* Controller button styles */
+        .controller-button {
+            position: absolute;
+            top: 20px;
+            left: 170px; /* Adjust position as needed to appear next to other buttons */
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            color: white;
+            font-size: 20px;
+            transition: background 0.3s ease;
+            z-index: 30;
+        }
+
+        .controller-button:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
         /* Apply themes */
         body {
             background-color: var(--bg-color, #1c1c1c);
@@ -451,7 +471,8 @@
 
         .music-button,
         .settings-button,
-        .credits-button {
+        .credits-button,
+        .controller-button {
             color: var(--icon-color, #ffffff);
         }
 
@@ -569,6 +590,10 @@
         <i class="fas fa-info-circle"></i>
     </button>
 
+    <button class="controller-button" onclick="window.open('https://playervpn.github.io/playervpn-games/', '_blank');" aria-label="Go to Player VPN Games">
+        <i class="fas fa-gamepad"></i>
+    </button>
+
     <div class="modal" id="roomModal">
         <div class="modal-content">
             <h2>Join a Room</h2>
@@ -603,7 +628,7 @@
                 <option value="goldensummer.mp3">Summer Beat</option>
                 <option value="coldbrew.mp3">Lobby Music - Elevator</option>
             </select>
-            <button class="close-button" onclick="closeThemeModal()">&#10006;</button> <!-- Big red X -->
+            <button class="close-button" onclick="closeThemeModal()">✖</button> <!-- Big red X -->
         </div>
     </div>
 
