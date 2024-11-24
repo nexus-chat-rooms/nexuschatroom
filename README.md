@@ -25,3 +25,9 @@ Please, as you will, email us if you need help or have ideas to share!
 Our site has some minor down times. **Sometimes** around: 
 ⚠️**2 PM**
 ⚠️**5 PM**
+
+# Plan for the future
+
+![alt text](LilyAI.png)
+
+Soon, we hope to have a message companion bot to help you write the perfect message.
