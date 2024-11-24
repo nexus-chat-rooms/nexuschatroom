@@ -8,7 +8,7 @@ Fork our site by clicking fork! Also give the repository a star! It helps out a 
 Introducing themes. Select what you prefer! ![alt text](https://nexus-chat-rooms.github.io/nexuschatroom/themesreadme.jpeg)
 
 # BACKGROUND MUSIC🎵
-Added background music options, don't like the OG music? Choose a new option!![alt text](https://nexus-chat-rooms.github.io/nexuschatroom/themesreadme.jpeg)
+Added background music options, don't like the OG music? Choose a new option!![alt text](https://nexus-chat-rooms.github.io/nexuschatroom/selectmusic.jpeg)
 
 # Creators
 @flixifytvisbackformoregithub
