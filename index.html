@@ -427,26 +427,6 @@
             background: rgba(255, 255, 255, 0.5);
         }
 
-        /* Games button */
-        .games-button {
-            position: absolute;
-            top: 20px;
-            left: 170px; /* Adjust as needed */
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            border-radius: 5px;
-            padding: 10px;
-            cursor: pointer;
-            color: white;
-            font-size: 20px;
-            transition: background 0.3s ease;
-            z-index: 30;
-        }
-
-        .games-button:hover {
-            background: rgba(255, 255, 255, 0.5);
-        }
-
         /* Apply themes */
         body {
             background-color: var(--bg-color, #1c1c1c);
@@ -471,8 +451,7 @@
 
         .music-button,
         .settings-button,
-        .credits-button,
-        .games-button {
+        .credits-button {
             color: var(--icon-color, #ffffff);
         }
 
@@ -590,11 +569,6 @@
         <i class="fas fa-info-circle"></i>
     </button>
 
-    <!-- New Game Button -->
-    <button class="games-button" id="gamesButton" aria-label="Games">
-        <i class="fas fa-gamepad"></i>
-    </button>
-
     <div class="modal" id="roomModal">
         <div class="modal-content">
             <h2>Join a Room</h2>
@@ -669,14 +643,6 @@
         let isRecording = false; // Track voice recording status
         let recognition; // Speech recognition instance
         let isMusicMuted = false; // Track music mute status
-        const badWords = ["fuck", "shit", "nigger", "bitch", "dick", "ass", "asshole", "cock"]; // Replace with actual bad words
-        const userKicked = localStorage.getItem('kickedUser');
-
-        // Check if user has been kicked and prevent them from rejoining
-        if (userKicked) {
-            alert("You have said a bad word. until our next update, you will no longer be able to be part of Nexus!");
-            window.location.reload(); // Reload the page if user is kicked
-        }
 
         // Check screen size function
         function checkScreenSize() {
@@ -770,14 +736,6 @@
             const timestamp = new Date().toLocaleTimeString();
 
             if (messageText === '') return;
-
-            // Check for bad words
-            if (badWords.some(badWord => messageText.toLowerCase().includes(badWord))) {
-                alert("You have been kicked for using inappropriate language.");
-                localStorage.setItem('kickedUser', userName);
-                window.location.reload(); // Reload to remove user from the chat
-                return; // Prevent further processing
-            }
 
             if (!text) {
                 messageInput.value = ''; // Clear input field if sending manually
@@ -905,11 +863,6 @@
             document.body.classList.add(theme); // Add selected theme class
             closeThemeModal(); // Close the modal after selection
         }
-
-        // Add click event for the newly added games button
-        document.getElementById('gamesButton').onclick = function () {
-            window.location.href = "https://playervpn.github.io/playervpn-games/"; // Link to the games page
-        };
 
         // particlesJS setup
         particlesJS("particles-js", {
