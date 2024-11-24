@@ -39,6 +39,21 @@
             z-index: 0;
         }
 
+        /* Custom scrollbar styles */
+        ::-webkit-scrollbar {
+            width: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #3b82f6;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #1e90ff;
+        }
+
         /* Container and header styles */
         .container {
             position: relative;
@@ -184,7 +199,7 @@
             padding: 15px 25px;
             border-radius: 10px;
             z-index: 20;
-            display: none; /* Start hidden */
+            display: none; /* Hidden initially */
             animation: fadeIn 0.5s ease;
         }
 
@@ -244,7 +259,7 @@
             transform: scale(1.05);
         }
 
-        /* New settings modal button styles */
+        /* Close button styles */
         .close-button {
             display: inline-block;
             background: red;
@@ -451,6 +466,7 @@
             --icon-color: #ffffff;
         }
 
+        /* Example theme styles */
         .mocha {
             --bg-color: #4e3b34;
             --header-bg: rgba(66, 54, 49, 0.9);
@@ -540,7 +556,7 @@
         <source src="5.ogg" type="audio/ogg">
         Your browser does not support the audio element.
     </audio>
-    
+
     <button id="musicMuteButton" class="music-button" aria-label="Mute/Unmute Music">
         <i class="fas fa-volume-up"></i>
     </button>
@@ -582,6 +598,7 @@
             <label for="bgMusicSelect" style="color: white; margin-top: 20px;">Select Background Music:</label>
             <select id="bgMusicSelect" style="margin-top: 5px; padding: 5px; border-radius: 5px; border: none;">
                 <option value="5.ogg">Nexus OG</option>
+                <option value=".mp3">Funky Game Music.</option> <!-- Add more music files as options -->
             </select>
             <button class="close-button" onclick="closeThemeModal()">&#10006;</button> <!-- Big red X -->
         </div>
@@ -655,10 +672,8 @@
             document.getElementById('bgMusicSelect').addEventListener('change', function () {
                 const selectedSong = this.value;
                 const backgroundMusic = document.getElementById('backgroundMusic');
-                backgroundMusic.src = selectedSong;
-                backgroundMusic.play().catch(error => {
-                    console.error('Audio playback failed:', error);
-                });
+                backgroundMusic.src = selectedSong; // Change the source to the selected music
+                backgroundMusic.play(); // Play the new music
             });
         };
 
