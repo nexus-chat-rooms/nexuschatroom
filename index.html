@@ -173,6 +173,21 @@
             transform: scale(1.05);
         }
 
+        /* Join notification styles */
+        .join-notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(75, 0, 130, 0.8);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            z-index: 20;
+            display: none; /* Start hidden */
+            animation: fadeIn 0.5s ease;
+        }
+
         /* Modal styles */
         .modal {
             position: fixed;
@@ -521,7 +536,10 @@
 <body>
 
     <div id="particles-js" class="particles-js"></div>
-    <audio id="backgroundMusic" loop preload="auto"></audio>
+    <audio id="backgroundMusic" loop preload="auto">
+        <source src="5.ogg" type="audio/ogg">
+        Your browser does not support the audio element.
+    </audio>
     
     <button id="musicMuteButton" class="music-button" aria-label="Mute/Unmute Music">
         <i class="fas fa-volume-up"></i>
@@ -591,6 +609,10 @@
         <button onclick="resizeScreen()">Reload or shrink your screen size!</button>
     </div>
 
+    <div class="join-notification" id="joinNotification" style="display: none;">
+        <h2 id="joinMessage"></h2>
+    </div>
+
     <script>
         const CLIENT_ID = 'aSEKMcR4GsEZONob';
         const drone = new ScaleDrone(CLIENT_ID);
@@ -621,6 +643,7 @@
             checkScreenSize();
             const backgroundMusic = document.getElementById('backgroundMusic');
             backgroundMusic.volume = 0.4; // Adjust volume as needed
+            backgroundMusic.play(); // Play music automatically
 
             document.body.addEventListener('click', () => {
                 backgroundMusic.play().catch(error => {
@@ -676,7 +699,7 @@
                     addMessageToList(data.text, data.name, member.id === drone.clientId);
                     if (!userNames[data.name]) {
                         userNames[data.name] = { clientId: member.id };
-                        showJoinNotification(data.name);
+                        showJoinNotification(data.name); // Show notification
                     }
                     if (member.id !== drone.clientId) {
                         const notificationSound = document.getElementById('notificationSound');
