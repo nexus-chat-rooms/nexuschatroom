@@ -28,6 +28,6 @@ Our site has some minor down times. **Sometimes** around:
 
 # Plan for the future
 
-![alt text](LilyAI.png)
+![alt text](image.png)
 
 Soon, we hope to have a message companion bot to help you write the perfect message.
