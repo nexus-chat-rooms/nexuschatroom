@@ -1,4 +1,4 @@
-# NEXUS CHAT ROOMS 💬
+# NEXUS CHAT ROOMS 💬 ![alt text](https://nexus-chat-rooms.github.io/nexuschatroom/nexus.png)
 Fork our site by clicking fork!
 
 # Online🌐
