@@ -10,6 +10,6 @@ Fork our site by clicking fork!
 @playervpn
 
 # Down?⚠️
-Our site has some minor down times. Sometimes around: 
+Our site has some minor down times. **Sometimes** around: 
 ⚠️**2 PM**
 ⚠️**5 PM**
