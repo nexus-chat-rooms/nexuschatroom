@@ -671,29 +671,8 @@
         let recognition; // Speech recognition instance
         let isMusicMuted = false; // Track music mute status
 
-        // Define bad words
-        const badWords = ["Fuck", "Shit", "Ass", "Asshole", "Nigger", "Bitch", "Dick", "Motherfucker", "Fucker", "Cock"]; // Add your bad words here
-
-        // Function to check if the message contains any bad words
-        function containsBadWords(message) {
-            return badWords.some(word => message.toLowerCase().includes(word.toLowerCase()));
-        }
-
-        // Function to redirect to ban.html and set a ban timestamp
-        function banUser() {
-            const banEndTime = new Date().getTime() + 5 * 60 * 1000; // 30 minutes from now
-            localStorage.setItem('banEndTime', banEndTime);
-            window.location.href = 'https://nexus-chat-rooms.github.io/nexuschatroom/ban.html'; // Redirect to the ban page
-        }
-
         // Check screen size function
         function checkScreenSize() {
-            const banEndTime = localStorage.getItem('banEndTime');
-            const now = new Date().getTime();
-            if (banEndTime && now < banEndTime) {
-                // User is currently banned
-                window.location.href = 'ban.html';
-            }
             if (window.innerWidth < 500) {
                 document.getElementById("errorScreen").style.display = "flex";
                 document.getElementById("chatContainer").style.display = "none";
@@ -778,22 +757,14 @@
             });
         }
 
-        function sendMessage(text) {
+        function sendMessage() {
             const messageInput = document.getElementById('messageInput');
-            const messageText = text || messageInput.value.trim();
+            const messageText = messageInput.value.trim();
             const timestamp = new Date().toLocaleTimeString();
 
             if (messageText === '') return;
 
-            // Check for bad words
-            if (containsBadWords(messageText)) {
-                banUser(); // Ban user if bad words are found
-                return;
-            }
-
-            if (!text) {
-                messageInput.value = ''; // Clear input field if sending manually
-            }
+            messageInput.value = ''; // Clear input field if sending manually
 
             drone.publish({
                 room: `observable-${roomCode}`,
