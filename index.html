@@ -681,7 +681,7 @@
 
         // Function to redirect to ban.html and set a ban timestamp
         function banUser() {
-            const banEndTime = new Date().getTime() + 30 * 60 * 1000; // 30 minutes from now
+            const banEndTime = new Date().getTime() + 5 * 60 * 1000; // 30 minutes from now
             localStorage.setItem('banEndTime', banEndTime);
             window.location.href = 'https://nexus-chat-rooms.github.io/nexuschatroom/ban.html'; // Redirect to the ban page
         }
